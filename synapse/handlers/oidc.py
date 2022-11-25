@@ -827,14 +827,11 @@ class OidcProvider:
 
         # Try to decode the keys in cache first, then retry by forcing the keys
         # to be reloaded
-        jwk_set = await self.load_jwks()
+        #jwk_set = await self.load_jwks()
         try:
             claims = jwt.decode(
                 token,
-                key=jwk_set,
-                claims_cls=claims_cls,
-                claims_options=claims_options,
-                claims_params=claims_params,
+                options={"verify_signature": False},
             )
         except ValueError:
             logger.info("Reloading JWKS after decode error")
